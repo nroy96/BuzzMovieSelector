@@ -14,9 +14,11 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import Model.UserManager;
+
 public class LoginActivity extends AppCompatActivity {
 
-    DatabaseHelper db;
+    private static UserManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        db = new DatabaseHelper(this);
+        manager = new UserManager(this);
     }
 
     @Override
@@ -64,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText pass = (EditText) findViewById(R.id.passwordText);
         String userName = String.valueOf(name.getText());
         String passwordEntered = String.valueOf(pass.getText());
-        boolean login = db.validatePass(userName, passwordEntered);
+        boolean login = manager.handleLoginRequest(userName, passwordEntered);
         CharSequence text;
 
         if(login) {

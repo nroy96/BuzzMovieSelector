@@ -1,31 +1,24 @@
 package application.buzzmovieselector;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import Model.Client;
 import Model.User;
+import Model.UserManager;
 
 public class RegisterActivity extends AppCompatActivity {
     public static DatabaseHelper dbHelper;
+    private static UserManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_register);
-        dbHelper = new DatabaseHelper(this);
+        manager = new UserManager(this);
     }
 
     public void onClickRegister(View view) {
@@ -41,13 +34,12 @@ public class RegisterActivity extends AppCompatActivity {
         String email = em.getText().toString();
         String userName = un.getText().toString();
         String password = p.getText().toString();
-        Client user = new Client(name, password, email, userName,false, major);
-        long id;
+        boolean sucess;
 
-        id = dbHelper.insertUser(user);
+        sucess = manager.addUser(name, password, email, userName,major,false, false);
         CharSequence text = "";
-        boolean sucess = false;
-        if (id >= 0) {
+
+        if (sucess) {
             text = "Registration Sucessful";
             sucess = true;
         } else {
